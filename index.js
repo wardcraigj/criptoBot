@@ -1,7 +1,11 @@
 'use strict';
+
+
 const electron = require('electron');
 
 const app = electron.app;
+let PriceRepository = require('./js/repositories/price-repository').PriceRepository;
+
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
@@ -23,6 +27,10 @@ function createMainWindow() {
 
 	win.loadURL(`file://${__dirname}/index.html`);
 	win.on('closed', onClosed);
+
+	var priceRepo = new PriceRepository();
+
+	priceRepo.addPriceToDatabase();
 
 	return win;
 }
