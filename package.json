@@ -25,6 +25,7 @@
     "electron"
   ],
   "dependencies": {
+    "coinbase": "^2.0.7",
     "electron-debug": "^1.0.0"
   },
   "devDependencies": {
