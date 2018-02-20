@@ -1,10 +1,13 @@
-'use strict';
+// 'use strict';
 const electron = require('electron');
 
-const app = electron.app;
+const {app, BrowserWindow, Menu} = electron;
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
+
+const path = require('path');
+const url = require('url');
 
 // prevent window being garbage collected
 let mainWindow;
@@ -24,6 +27,11 @@ function createMainWindow() {
 	win.loadURL(`file://${__dirname}/index.html`);
 	win.on('closed', onClosed);
 
+	// Build menu from template
+	const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
+	// Insert Menu
+	Menu.setApplicationMenu(mainMenu);
+
 	return win;
 }
 
@@ -39,6 +47,44 @@ app.on('activate', () => {
 	}
 });
 
-app.on('ready', () => {
-	mainWindow = createMainWindow();
-});
+
+function createAddWindow() {
+	// Create new window
+	addWindow  = new BrowserWindow({
+		width: 400,
+		height: 300,
+		title:'Add Configuration'
+	});
+	// Load html into window
+	addWindow.loadURL(url.format({
+		pathname: path.join(__dirname, 'addConfiguration.html'),
+		protocol:'file',
+		slashes:true
+	}));
+}
+
+const mainMenuTemplate = [
+	{
+		label:'CryptoBot',
+		submenu:[
+			{
+				label: 'Add Configuration',
+				click(){
+					createAddWindow();
+				}
+			},
+			{
+				label: 'Show Configuration'
+			},
+			{
+				label:'Quit',
+				accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctrl+Q',
+				click(){
+					app.quit();
+				}
+			}
+		]
+	}
+];
+
+
