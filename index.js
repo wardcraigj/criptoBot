@@ -2,14 +2,14 @@
 const electron = require('electron');
 
 const {app, BrowserWindow, Menu} = electron;
-let PriceRepository = require('./js/repositories/price-repository').PriceRepository;
-
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
 
 const path = require('path');
 const url = require('url');
+
+
 
 // prevent window being garbage collected
 let mainWindow;
@@ -34,9 +34,10 @@ function createMainWindow() {
 	// Insert Menu
 	Menu.setApplicationMenu(mainMenu);
 
-	var priceRepo = new PriceRepository();
+	var PriceService = require('./js/services/price-service').PriceService;
+	var priceService = new PriceService();
 
-	priceRepo.addPriceToDatabase();
+	priceService.populateHistoricalPrices();
 
 	return win;
 }

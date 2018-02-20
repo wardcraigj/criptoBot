@@ -1,6 +1,6 @@
     'use strict';
 
-let BaseRepository = require('./base-repository').BaseRepository;
+var BaseRepository = require('./base-repository').BaseRepository;
 
 class PriceRepository extends BaseRepository {
     
@@ -17,6 +17,10 @@ class PriceRepository extends BaseRepository {
       console.log(id);
     });
 
+  }
+
+  getLastPriceTimestamp() {
+    return 0;
   }
 
 }
