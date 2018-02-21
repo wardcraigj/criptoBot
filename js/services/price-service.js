@@ -59,6 +59,30 @@ class PriceService extends BaseService {
       });
     });
   }
+
+  fetchCurrentPrices(cb) {
+    var self = this;
+    var currentTime = Date.now();
+
+    this.apithrottle(function () {
+
+      self.apithrottle(function () {self.coinbaseClient.getBuyPrice({'currencyPair': 'BTC-USD'},function (err, buyPrice) {
+        self.apithrottle(function () {self.coinbaseClient.getSellPrice({'currencyPair': 'BTC-USD'},function (err, sellPrice) {
+          self.apithrottle(function () {self.coinbaseClient.getSpotPrice({'currencyPair': 'BTC-USD'},function (err, spotPrice) {
+            self.priceRepo.addPriceToDatabase(currentTime, spotPrice.data.amount, buyPrice.data.amount, sellPrice.data.amount);
+            if(typeof cb === "function") {
+              cb({
+                timestamp: currentTime,
+                spotPrice: spotPrice.data.amount,
+                buyPrice: buyPrice.data.amount,
+                sellPrice: sellPrice.data.amount
+              })
+            }
+          });});
+        });});
+      });});
+    });
+  };
 }
 
 module.exports.PriceService = PriceService;
