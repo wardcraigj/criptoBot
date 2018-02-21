@@ -9,6 +9,11 @@ require('electron-debug')();
 const path = require('path');
 const url = require('url');
 
+var env = require('node-env-file');
+env('.env');
+var priceService = new (require('./js/services/price-service').PriceService)();
+priceService.populateHistoricalPrices();
+
 // prevent window being garbage collected
 let mainWindow;
 
@@ -31,7 +36,6 @@ function createMainWindow() {
 	const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
 	// Insert Menu
 	Menu.setApplicationMenu(mainMenu);
-
 	return win;
 }
 
