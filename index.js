@@ -11,8 +11,7 @@ const url = require('url');
 
 var env = require('node-env-file');
 env('.env');
-var PriceService = require('./js/services/price-service').PriceService;
-var priceService = new PriceService();
+var priceService = new (require('./js/services/price-service').PriceService)();
 priceService.populateHistoricalPrices();
 
 // prevent window being garbage collected
