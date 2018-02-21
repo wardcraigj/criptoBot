@@ -4,7 +4,7 @@ var BaseRepository = require('./base-repository').BaseRepository;
 
 class PriceRepository extends BaseRepository {
     
-  addPriceToDatabase(time = Date.now(), buyPrice = 0, sellPrice = 0, spotPrice = 0) {
+  addPriceToDatabase(time, spotPrice = 0, buyPrice = 0, sellPrice = 0) {
 
     var priceId = this.db.insert({
       spot_price: spotPrice,
@@ -14,13 +14,15 @@ class PriceRepository extends BaseRepository {
     })
     .into('prices')
     .then(function (id) {
-      console.log(id);
+      console.log('inserted spot: ' +spotPrice + ' id: ' + id);
     });
 
   }
 
   getLastPriceTimestamp() {
-    return 0;
+
+    
+    return this.db.select('timestamp').from('prices').orderBy('timestamp','desc').first().then();
   }
 
 }
