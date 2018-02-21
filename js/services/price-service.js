@@ -82,7 +82,50 @@ class PriceService extends BaseService {
         });});
       });});
     });
-  };
+  }
+
+  getChangeSince(cb, timestamp) {
+    var self = this;
+
+
+
+    self.priceRepo.getMostRecentPriceRelativeToTimestamp()
+    .then(function(mostRecentPrice){
+
+      if(!timestamp) {
+        timestamp = mostRecentPrice.timestamp - 1;
+      }
+      
+      self.priceRepo.getMostRecentPriceRelativeToTimestamp(timestamp)
+      .then(function(timeStampPrice){
+
+        var changeInfo = {
+          buyPrice: {
+            old: timeStampPrice.buy_price,
+            new: mostRecentPrice.buy_price,
+            change: self.determineChange(timeStampPrice.buy_price, mostRecentPrice.buy_price)
+          },
+          sellPrice: {
+            old: timeStampPrice.sell_price,
+            new: mostRecentPrice.sell_price,
+            change: self.determineChange(timeStampPrice.sell_price, mostRecentPrice.sell_price)
+          },
+          spotPrice: {
+            old: timeStampPrice.spot_price,
+            new: mostRecentPrice.spot_price,
+            change: self.determineChange(timeStampPrice.spot_price, mostRecentPrice.spot_price)
+          }
+        };
+        if(typeof cb === "function") {
+          cb(changeInfo);
+        }
+      });
+    });
+  }
+
+  determineChange(oldPrice, newPrice) {
+    return ((newPrice - oldPrice)/oldPrice) * 100;
+  }
 }
 
 module.exports.PriceService = PriceService;

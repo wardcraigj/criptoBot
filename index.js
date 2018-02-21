@@ -68,17 +68,19 @@ function createAddWindow() {
 
 function realtimePriceLoop () {
 
-	var frequency = 60 * 1000;
+	var frequency = 5 * 1000;
+	var lookback = Date.now() - (30 * 60 * 1000);
 	
 	console.log('running background fetch');
 	priceService.fetchCurrentPrices();
-
+	priceService.getChangeSince(console.log, lookback);
 	setTimeout(realtimePriceLoop, frequency);
 }
 
 app.on('ready', ()=> {
 
 	realtimePriceLoop();
+	
 });
 
 const mainMenuTemplate = [
