@@ -59,7 +59,6 @@ class PriceService extends BaseService {
       });
     });
   }
-
 }
 
 module.exports.PriceService = PriceService;

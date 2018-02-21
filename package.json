@@ -27,7 +27,6 @@
   ],
   "dependencies": {
     "coinbase": "^2.0.7",
-    "date-and-time": "^0.6.2",
     "dateformat": "^3.0.3",
     "electron-debug": "^1.0.0",
     "knex": "^0.14.4",
