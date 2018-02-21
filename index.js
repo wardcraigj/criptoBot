@@ -15,7 +15,7 @@ var priceService = new (require('./js/services/price-service').PriceService)();
 priceService.populateHistoricalPrices();
 
 // prevent window being garbage collected
-let mainWindow, backgroundWindow;
+let mainWindow;
 
 function onClosed() {
 	// dereference the window
