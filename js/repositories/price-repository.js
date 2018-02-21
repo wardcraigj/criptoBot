@@ -22,6 +22,16 @@ class PriceRepository extends BaseRepository {
 
     return this.db.select('timestamp').from('prices').orderBy('timestamp', 'desc').first().then();
   }
+
+  getMostRecentPriceRelativeToTimestamp(timestamp= Date.now()){
+
+    return this.db.select('*')
+    .from('prices')
+    .where('timestamp','<', timestamp)
+    .orderBy('timestamp', 'desc')
+    .first()
+    .then();
+  }
 }
 
 module.exports.PriceRepository = PriceRepository;
