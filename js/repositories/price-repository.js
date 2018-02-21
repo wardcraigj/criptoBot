@@ -14,7 +14,7 @@ class PriceRepository extends BaseRepository {
     })
       .into('prices')
       .then(function (id) {
-        console.log('inserted spot: ' + spotPrice + ' id: ' + id);
+        console.log('inserted id: ' + id + ' spot: ' + spotPrice  + ' buy: ' + buyPrice + ' sell: ' + sellPrice);
       });
   }
 
