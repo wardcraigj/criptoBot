@@ -123,6 +123,21 @@ class PriceService extends BaseService {
     });
   }
 
+  getSellPrice(cb) {
+    var self = this;
+    
+    self.apithrottle(function () {self.coinbaseClient.getSellPrice({'currencyPair': 'BTC-USD'},function (err, sellPrice) {
+      cb(sellPrice.data.amount)
+    });});
+  }
+  getBuyPrice(cb) {
+    var self = this;
+    
+    self.apithrottle(function () {self.coinbaseClient.getBuyPrice({'currencyPair': 'BTC-USD'},function (err, buyPrice) {
+      cb(buyPrice.data.amount)
+    });});
+  }
+
   determineChange(oldPrice, newPrice) {
     return ((newPrice - oldPrice)/oldPrice) * 100;
   }
